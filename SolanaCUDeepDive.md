@@ -1,7 +1,7 @@
-<img 
-  width="1000px" 
-  height="250px" 
-  src="./images/solana-blog.jpg" 
+<img
+width="1000px"
+height="350px"
+src="./images/solana-blog.jpg"
 />
 
 # Deep Dive into Solana CU 🦀
