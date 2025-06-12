@@ -43,19 +43,19 @@ _For example, for an simple transaction like sending a SOL form wallet A to wall
 
 ```
 
-                let transfer_amount_accounts = Transfer {
-                    from: ctx.accounts.signer.to_account_info(),
-                    to: ctx.accounts.recipient.to_account_info(),
-                };
+let transfer_amount_accounts = Transfer {
+      from: ctx.accounts.signer.to_account_info(),
+      to: ctx.accounts.recipient.to_account_info(),
+    };
 
-                let ctx = CpiContext::new(
-                    ctx.accounts.system_program.to_account_info(),
-                    transfer_amount_accounts,
-                );
+let ctx = CpiContext::new(
+        ctx.accounts.system_program.to_account_info(),
+        transfer_amount_accounts,
+      );
 
-                transfer(ctx, amount * LAMPORTS_PER_SOL)?;
+transfer(ctx, amount * LAMPORTS_PER_SOL)?;
 
-               // Takes around 3000 CU
+ // Takes around 3000 CU
 ```
 
 The code in the above was written in Anchor ⚓️, It performs an simple transfer of SOL, and for that it taking 3000 CUs.
