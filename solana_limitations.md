@@ -80,6 +80,8 @@ const computeLimitIx = ComputeBudgetProgram.setComputeUnitLimit({
 });
 ```
 
+- Regardless of the compute units consumed, the transaction charged 5000 lamports or 0.000005 SOL.
+
 ### Why we have limited Compute Unit Budget ?
 
 In short and simple terms, Solana has CU limitations to ensure fair resource allocation. But what does that mean ?
