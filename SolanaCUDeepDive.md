@@ -1,7 +1,7 @@
 <img
 width="1000px"
 height="350px"
-src="./images/solana-blog.jpg"
+src="./images/bhudha.png"
 />
 
 # Deep Dive into Solana CU 🦀
@@ -27,4 +27,6 @@ Solana is a high-performance public blockchain that stands apart from traditiona
 
 However, programs running on Solana are subject to several types of resource limitations. These limitations ensure that programs use system resources fairly while maintaining high performance.
 
-Knowing these boundaries is very helpful for developers, as it guides them in building efficient and reliable program
+Knowing these boundaries is very helpful for developers, as it guides them in building efficient and reliable program.
+
+## Compute Unite Limitations:
