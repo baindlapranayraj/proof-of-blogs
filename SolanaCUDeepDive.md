@@ -1,6 +1,6 @@
 <img
 width="1000px"
-height="350px"
+height="480px"
 src="./images/bhudha.png"
 />
 
@@ -23,10 +23,12 @@ Hear what u can expect from this blog:-
 
 # Limitations of Solana:-
 
-Solana is a high-performance public blockchain that stands apart from traditional blockchains like Bitcoin and Ethereum. Its unique approach to transaction processing separates logic and state into different accounts, which allows Solana to process many transactions simultaneously.
+Solana is a high-performance public blockchain that stands apart from traditional blockchains like Bitcoin and Ethereum due its unique approach to transaction processing separates logic and state into different accounts, which allows Solana to process many transactions simultaneously.
 
 However, programs running on Solana are subject to several types of resource limitations. These limitations ensure that programs use system resources fairly while maintaining high performance.
 
 Knowing these boundaries is very helpful for developers, as it guides them in building efficient and reliable program.
 
 ## Compute Unite Limitations:
+
+CU (Compute Unite) are the basic fundemental units for measuring the computation work of an transaction or instructions does on a solana its kinds similar to "Gas" fees on Ethereum but much more deterministic and low-latency.Every instruction our smart contract executes on-chain reading, writing to accounts, cryptographic operations(like zk-elgamal),signature verification consumes a certain number of CUs.
