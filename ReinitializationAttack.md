@@ -4,7 +4,7 @@
  src="./images/bhudha.png"
 />
 
-# Reinitialization Attack
+# 🕷️ Reinitialization Attack
 
 Program Example (Btw I use Neovim 🙂): [github link](https://github.com/baindlapranayraj/reinitialization-attack-demo)  
 To understand how reinitialization attacks work, we must first understand the inner workings of the `init` and `init_if_needed` constraints in Anchor ⚓️.

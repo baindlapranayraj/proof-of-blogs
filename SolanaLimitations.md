@@ -4,7 +4,7 @@
  src="./images/shinchan .jpg"
 />
 
-# Deep Dive into Solana CU 🦀
+# 🦀 Solana Limitatons (Still writing)
 
 GM GM everyone 😁,
 
@@ -29,7 +29,7 @@ However, programs running on Solana are subject to several types of resource lim
 
 Knowing these boundaries is very helpful for developers, as it guides them in building efficient and reliable program.
 
-1. **Compute Unite Limitations:**
+## 1. Compute Unite Limitations:
 
 ### What is Compute Units ?
 
@@ -41,7 +41,7 @@ If you perform simple transactions, then nodes can process those smart contracts
 
 _For example, for an simple transaction like sending a SOL form wallet A to wallet B it takes around 3000 Compute Units_
 
-```
+```rust
 
 let transfer_amount_accounts = Transfer {
       from: ctx.accounts.signer.to_account_info(),
@@ -66,7 +66,7 @@ The code in the above was written in Anchor ⚓️, It performs an simple transf
 
 - If a transaction or instruction exhausts the 200,000 CU limit, the transaction or instruction is simply reverted, all state changes are undone, and the fees are not refunded to the signer who invoked the transaction. (This mechanism prevents attackers from running never-ending or computationally intensive programs on nodes, which could slow down or halt the chain.)
 
-```
+```rust
 Error: exceeded maximum number of instructions allowed (200000) compute units
 ```
 
@@ -74,10 +74,18 @@ Error: exceeded maximum number of instructions allowed (200000) compute units
 
 - Well we can increase our computation limit using `SetComputeUnitLimit` we can request a specific calculation unit limit by adding an instruction to our transaction. But 🍑 we can only increase CUs Budget only upto 1.4 Million Units.
 
-```
+```rust
 const computeLimitIx = ComputeBudgetProgram.setComputeUnitLimit({
   units: 500000,  // Increased from 200k to 500k CUs.
 });
 ```
 
 ### Why we have limited Compute Unit Budget ?
+
+In short and simple terms, Solana has CU limitations to ensure fair resource allocation. But what does that mean ?
+
+Solana validators are individual computers (or nodes) that process blockchain transactions and maintain the network’s state (these are the basic fundamentals you must know 😒). Each validator has limited CPU power and memory, just like any regular computer. When programs run inside these nodes, they allocate some memory to process all the instructions.
+
+Now, if a malicious user sends a transaction that contains infinite loops, it can use a huge amount of memory and may slow or even crash the system. Since the blockchain is a network of shared computers/nodes, if one user performs a huge number of CPU tasks and uses a large amount of CPU/memory, it hogs the system, starving other users.
+
+Due to this limitation in CU Budget it helps solana network to prevent denial-of-service (DoS) attacks and resource exhaustion on validators.
