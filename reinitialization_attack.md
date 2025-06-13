@@ -1,6 +1,6 @@
 <img
  width="1000px"
- height="500px"
+ height="350px"
  src="./images/attack.jpg"
 />
 
