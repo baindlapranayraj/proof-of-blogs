@@ -1,7 +1,7 @@
 <img
  width="1000px"
- height="480px"
- src="./images/bhudha.png"
+ height="500px"
+ src="https://i.pinimg.com/736x/71/44/cc/7144cc597541d60826c984ab9fe935d8.jpg"
 />
 
 # 🕷️ Reinitialization Attack
