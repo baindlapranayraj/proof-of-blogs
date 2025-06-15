@@ -96,8 +96,8 @@ A transaction on Solana is a request sent by users to interact with the network,
 Each transaction contains one or more instructions that specify the operations to perform on the blockchain. This execution logic is stored in raw bytes in program state.
 
 <img
- width="500px"
- height="150px"
+ width="1000px"
+ height="550px"
  src="./images/trx_arch.png"
 />
 
@@ -116,8 +116,8 @@ Each transaction contains one or more instructions that specify the operations t
 ### Transacion Size Limitaions:-
 
 <img
- width="500px"
- height="150px"
+ width="1000px"
+ height="550px"
  src="./images/trx_size.png"
 />
 
@@ -142,6 +142,7 @@ In Solana programs (smart contracts), there's a limitation on the stack size - t
 ### What is Stack Memory?
 
 Stack memory is used for:
+
 - Local variables in functions
 - Function parameters
 - Return addresses
@@ -157,7 +158,7 @@ pub fn process_instruction(
 ) -> ProgramResult {
     // This large array on stack might cause issues
     let big_array = [0u8; 4096]; // ❌ This would fail
-    
+
     // Better to use smaller arrays or heap allocation
     let small_array = [0u8; 1000]; // ✅ This is fine
     Ok(())
@@ -165,6 +166,7 @@ pub fn process_instruction(
 ```
 
 To work around stack limitations:
+
 1. Use heap allocation when necessary
 2. Break large functions into smaller ones
 3. Avoid large stack-allocated arrays
@@ -225,6 +227,7 @@ let pda = Pubkey::find_program_address(
 ### PDA Derivation Constraints
 
 1. Program ID Limitation:
+
    - A PDA must be derived from exactly one program ID
    - Cannot be derived from multiple programs
 
@@ -235,6 +238,7 @@ let pda = Pubkey::find_program_address(
 ### Best Practices for PDA Usage
 
 1. Keep Seeds Minimal:
+
    ```rust
    // ✅ Good: Minimal, meaningful seeds
    let seeds = &[
@@ -244,6 +248,7 @@ let pda = Pubkey::find_program_address(
    ```
 
 2. Use Consistent Seed Structure:
+
    ```rust
    // ✅ Good: Consistent structure across your program
    let seeds = &[
