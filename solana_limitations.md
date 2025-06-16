@@ -1,6 +1,6 @@
 <img
  width="1000px"
- height="440px"
+ height="430px"
  src="./images/shinchan .jpg"
 />
 
@@ -12,10 +12,10 @@ In this blog, we will go through the various types of Solana resource limitation
 
 Hear what u can expect from this blog:-
 
-- CU Limitations ✅
-- transaction size limitations ✅
+- CU Limitations
+- Transaction size limitations
 - Stack size
-- PDA Accounts limitations
+
 
 # Limitations of Solana:
 
@@ -125,16 +125,42 @@ Every Solana transaction has a size limit of **1,232 bytes**. The total transact
 
 You would have encounter the `transaction size limit exceeded` error when you try to send too many accounts from client side or too many instructions in single transaction.
 
+
 **you might wonder why only limited to 1,232 bytes ?**
+In short :- The transaction size limit of 1,232 bytes in Solana is closely tied to how data is transmitted over the internet using IPv6 (Internet Protocol version 6). But lets break it down more.
 
-The transaction size limit of 1,232 bytes in Solana is closely tied to how data is transmitted over the internet using IPv6 (Internet Protocol version 6). Here's why:
+**Hears Why ?:**
 
-1. In networking, there's a concept called Maximum Transmission Unit (MTU) - the largest packet size that can be transmitted over a network.
-2. The standard MTU for IPv6 is 1,280 bytes.
-3. Solana's transaction size limit of 1,232 bytes ensures that transactions can fit within a single IPv6 packet, accounting for some overhead bytes needed for network headers.
+- explain QUIC (what and why)
+- explain the Trx size limit and new update on it.
 
-This limitation helps maintain network efficiency and reduces the chances of packet fragmentation, which could slow down transaction processing.
+#### Let’s go back to some fundamentals of computer networking briefly.
 
+So, what is computer networking?
+
+In simple terms, it's a group of computers or nodes connected together to share data 📦 among them. This can involve communication between two local nodes/computers (LAN) or between computers across the globe (Internet).
+
+For In order to communicate with nodes effectively without sending data 📦 or information to the wrong destination node, we need a set of rules or protocols to follow. **IP (Internet Protocol)** is the universal addressing system for nodes on a network. IP provides unique address for every node or computer and uses these addresses to route and deliver data packets 📦 to the correct destination.
+
+But solana also uses UDP(User Datagram Protocol) on top of IP, to send the packets/data 📦 more quickly (unlike in etheareum uses TCP which do lots of checks and hinders the speed if packet is too large). UDP just fires packets 📦, as fast as possible, with no guarantee they’ll arrive. But 🍑 if packet is large(if greater then MTU) then might get fragmented(splitted) which we may loose some data which reduces the reliablity.
+
+<img
+ width="1000px"
+ height="550px"
+ src="./images/trx_size_udp.png"
+/>
+
+OK now why are we learning all these stuff ? how are they related to Transaction Size limit ?
+ Hold your horses we are getting there lets connet some dots 😌.
+
+Solana nodes, like other networked computers, communicate using the Internet Protocol (IP)—often IPv6, the latest version. They must follow IP's rules for addressing and routing data. Solana nodes send serialized transactions to each other using the UDP transport protocol, which is fast and efficient.
+
+However, if a transaction (UDP packet) is larger than the network’s Maximum Transmission Unit (MTU), it is fragmented (split) by the IP layer, not by UDP itself. UDP simply sends the packets—it does not handle fragmentation If any fragment is lost in transit, the entire transaction is lost, since UDP provides no error correction or retransmission.
+
+So this fragmentation is handled by Solana,In order to avoid fragmentation the packt/transaction size should be less then MTU(Maximum Transmission Unit) which is typically **1280 bytes**.After Removing the headers(IP and UDP header = 48 bytes), 
+the remaining 1,232 bytes are allocated for transaction size.
+
+ 
 ## 3. Stack Size Limitations
 
 In Solana programs (smart contracts), there's a limitation on the stack size - the amount of memory allocated for local variables and function calls. The current stack frame size limit is **4KB per frame**.
@@ -172,102 +198,8 @@ To work around stack limitations:
 3. Avoid large stack-allocated arrays
 4. Use references instead of moving large data structures
 
-## 4. PDA (Program Derived Address) Account Limitations
 
-PDAs in Solana have several important limitations that developers need to be aware of:
 
-### Seed Length Limitations
-
-1. Maximum Combined Seed Length:
-   - The total length of all seeds combined cannot exceed 32 bytes
-   - This includes the length of each seed plus any separator bytes
-
-```rust
-// Example of seed length limitation
-let seeds = &[
-    "marketplace".as_bytes(),    // 11 bytes
-    user.key().as_ref(),        // 32 bytes
-    &[bump]                     // 1 byte
-];
-// ❌ This would exceed the limit as total > 32 bytes
-```
-
-### Number of Seeds Limitation
-
-1. Maximum Number of Seeds:
-   - A PDA can have up to 16 seeds
-   - Each seed can be of variable length
-
-```rust
-// Good practice
-let pda = Pubkey::find_program_address(
-    &[
-        "marketplace".as_bytes(),
-        user.key().as_ref(),
-        &[1u8]
-    ],
-    program_id
-);
-
-// ❌ Bad practice - too many seeds
-let pda = Pubkey::find_program_address(
-    &[
-        "type".as_bytes(),
-        "marketplace".as_bytes(),
-        "version".as_bytes(),
-        "id".as_bytes(),
-        user.key().as_ref(),
-        timestamp.to_le_bytes().as_ref(),
-        // ... more seeds
-    ],
-    program_id
-);
-```
-
-### PDA Derivation Constraints
-
-1. Program ID Limitation:
-
-   - A PDA must be derived from exactly one program ID
-   - Cannot be derived from multiple programs
-
-2. Bump Seed:
-   - Must be valid (0-255)
-   - Typically use bump 255 and work backwards
-
-### Best Practices for PDA Usage
-
-1. Keep Seeds Minimal:
-
-   ```rust
-   // ✅ Good: Minimal, meaningful seeds
-   let seeds = &[
-       "user_profile".as_bytes(),
-       user.key().as_ref(),
-   ];
-   ```
-
-2. Use Consistent Seed Structure:
-
-   ```rust
-   // ✅ Good: Consistent structure across your program
-   let seeds = &[
-       prefix.as_bytes(),
-       entity_type.as_bytes(),
-       identifier.as_ref(),
-   ];
-   ```
-
-3. Document Seed Structure:
-   ```rust
-   /// PDA Seeds Structure:
-   /// 1. Prefix: "user_profile"
-   /// 2. User's Public Key
-   /// 3. Bump Seed
-   pub fn initialize_user_profile(ctx: Context<InitUserProfile>) -> Result<()> {
-       // Implementation
-   }
-   ```
-
-[solana_optimization_github](https://github.com/solana-developers/cu_optimizations)
-[rare_skill_blog_post](https://www.rareskills.io/post/solana-compute-unit-price)
+[solana_optimization_github](https://github.com/solana-developers/cu_optimizations) <br/>
+[rare_skill_blog_post](https://www.rareskills.io/post/solana-compute-unit-price) <br/>
+[solana github discussion SIMD-0296](https://github.com/solana-foundation/solana-improvement-documents/pull/296/commits/bbc29c909085589989ca5f258550ce4447e68a89)<br/>
