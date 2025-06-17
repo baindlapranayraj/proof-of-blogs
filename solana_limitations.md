@@ -4,7 +4,7 @@
  src="./images/shinchan .jpg"
 />
 
-# 🦀 Solana Limitatons (Still writing)
+# 🦀 Deep Dive: Solana Limitatons
 
 GM GM everyone 😁,
 
@@ -160,7 +160,22 @@ However, if a transaction (UDP packet) is larger than the network’s Maximum Tr
 So this fragmentation is handled by Solana,In order to avoid fragmentation the packt/transaction size should be less then MTU(Maximum Transmission Unit) which is typically **1280 bytes**.After Removing the headers(IP and UDP header = 48 bytes), 
 the remaining 1,232 bytes are allocated for transaction size.
 
- 
+
+### Solana’s New Update: Increasing Transaction Size Limit
+With Solana’s adoption of modern transport protocols like QUIC (which doesn’t have the same strict MTU constraints as UDP, QUIC is more like cross-breed between TCP(of fragmentation handle) and UDP(fast as f*ck)), larger messages can be more reliably delivered.
+
+In the older version, where the transaction size was limited to 1,232 bytes, it was difficult to create complex transactions for ZK and DeFi applications. Increasing the number of accounts on the client side (with each account’s public key being 32 bytes) and listing all those public keys could quickly hit the transaction size limit.
+
+Because of this limitations developers should write optmize code where all accounts,user signatures should be squeezed into a tiny 1,232-byte space. 
+
+<img
+ width="1000px"
+ height="550px"
+ src="./images/meme_trx_size_limit.png"
+/>
+
+With this new [SIMD-296 proposes](https://github.com/solana-foundation/solana-improvement-documents/pull/296/commits/bbc29c909085589989ca5f258550ce4447e68a89) Transaction size limit incresed to **4k bytes**.This change allows for more instructions, larger data payloads, and smoother execution of complex dApps especially those involving multiple interactions or requiring rich metadata.
+
 ## 3. Stack Size Limitations
 
 In Solana programs (smart contracts), there's a limitation on the stack size - the amount of memory allocated for local variables and function calls. The current stack frame size limit is **4KB per frame**.
@@ -203,3 +218,4 @@ To work around stack limitations:
 [solana_optimization_github](https://github.com/solana-developers/cu_optimizations) <br/>
 [rare_skill_blog_post](https://www.rareskills.io/post/solana-compute-unit-price) <br/>
 [solana github discussion SIMD-0296](https://github.com/solana-foundation/solana-improvement-documents/pull/296/commits/bbc29c909085589989ca5f258550ce4447e68a89)<br/>
+[frank_castle tweet on solana transaction size limit](https://x.com/0xcastle_chain)
