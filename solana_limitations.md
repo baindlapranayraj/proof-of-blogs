@@ -4,7 +4,7 @@
  src="./images/shinchan .jpg"
 />
 
-# 🦀 Deep Dive: Solana Limitatons
+# 🦀 Deep Dive: Solana Limitatons (Still writing)
 
 GM GM everyone 😁,
 
@@ -126,13 +126,10 @@ Every Solana transaction has a size limit of **1,232 bytes**. The total transact
 You would have encounter the `transaction size limit exceeded` error when you try to send too many accounts from client side or too many instructions in single transaction.
 
 
-**you might wonder why only limited to 1,232 bytes ?**
+**you might wonder why only limited to 1,232 bytes ?** <br/>
 In short :- The transaction size limit of 1,232 bytes in Solana is closely tied to how data is transmitted over the internet using IPv6 (Internet Protocol version 6). But lets break it down more.
 
 **Hears Why ?:**
-
-- explain QUIC (what and why)
-- explain the Trx size limit and new update on it.
 
 #### Let’s go back to some fundamentals of computer networking briefly.
 
@@ -140,7 +137,7 @@ So, what is computer networking?
 
 In simple terms, it's a group of computers or nodes connected together to share data 📦 among them. This can involve communication between two local nodes/computers (LAN) or between computers across the globe (Internet).
 
-For In order to communicate with nodes effectively without sending data 📦 or information to the wrong destination node, we need a set of rules or protocols to follow. **IP (Internet Protocol)** is the universal addressing system for nodes on a network. IP provides unique address for every node or computer and uses these addresses to route and deliver data packets 📦 to the correct destination.
+For In order to communicate with nodes effectively without sending data 📦 or information to the wrong destination node, we need a set of rules or protocols to follow. **IP (Internet Protocol)** is the universal addressing system for nodes on a network. IP provides unique address for every node or computer and uses these addresses to route and deliver data packets 📦 to the correct destination. Data sent over a network isn’t sent all at once. It’s broken into small pieces called packets.
 
 But solana also uses UDP(User Datagram Protocol) on top of IP, to send the packets/data 📦 more quickly (unlike in etheareum uses TCP which do lots of checks and hinders the speed if packet is too large). UDP just fires packets 📦, as fast as possible, with no guarantee they’ll arrive. But 🍑 if packet is large(if greater then MTU) then might get fragmented(splitted) which we may loose some data which reduces the reliablity.
 
@@ -161,7 +158,7 @@ So this fragmentation is handled by Solana,In order to avoid fragmentation the p
 the remaining 1,232 bytes are allocated for transaction size.
 
 
-### Solana’s New Update: Increasing Transaction Size Limit
+### Solana’s New Update: Increasing Transaction Size Limit to 4000 bytes
 With Solana’s adoption of modern transport protocols like QUIC (which doesn’t have the same strict MTU constraints as UDP, QUIC is more like cross-breed between TCP(of fragmentation handle) and UDP(fast as f*ck)), larger messages can be more reliably delivered.
 
 In the older version, where the transaction size was limited to 1,232 bytes, it was difficult to create complex transactions for ZK and DeFi applications. Increasing the number of accounts on the client side (with each account’s public key being 32 bytes) and listing all those public keys could quickly hit the transaction size limit.
