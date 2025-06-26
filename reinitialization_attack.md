@@ -1,8 +1,5 @@
-<img
- width="1000px"
- height="350px"
- src="./images/attack.jpg"
-/>
+
+<img src="images/reintialization_attack.jpg" alt="alt text" width="1000" height = "500"/>
 
 # 🌙 Reinitialization Attack
 
@@ -30,26 +27,26 @@ In simple words, `init` ensures the account is created and initialized **only on
 #[account]
 #[derive(InitSpace)]
 pub struct User {
-  pub user_pubkey: Pubkey,
-  #[max_len(30)]
-  pub user_name: Option<String>,
-  pub balance: u64,
-  pub user_vault_bump: u8,
-  pub user_bump: u8,
+   pub user_pubkey: Pubkey,
+   #[max_len(30)]
+   pub user_name: Option<String>,
+   pub balance: u64,
+   pub user_vault_bump: u8,
+   pub user_bump: u8,
 }
 ```
 
 ```rust
 #[account(
-    init,
-    payer = USER,
-    space = 8 + User::INIT_SPACE,
-    seeds = [
-              USER,
-              user.key().to_bytes().as_ref(),
-              chau_config.key().to_bytes().as_ref()
-            ],
-    bump
+      init,
+      payer = USER,
+      space = 8 + User::INIT_SPACE,
+      seeds = [
+                     USER,
+                     user.key().to_bytes().as_ref(),
+                     chau_config.key().to_bytes().as_ref()
+                  ],
+      bump
 )]
 pub user_profile: Account<'info, User>,
 ```
@@ -80,22 +77,22 @@ Note: Here, the Account created by Anchor is a wrapper around the AccountInfo (s
 
 ```rust
 pub struct AccountInfo<'a> {
-     /// Public key of the account
-     pub key: &'a Pubkey,
-     /// The lamports in the account.  Modifiable by programs.
-     pub lamports: Rc<RefCell<&'a mut u64>>,
-     /// The data held in this account.  Modifiable by programs.
-     pub data: Rc<RefCell<&'a mut [u8]>>,
-     /// Program that owns this account
-     pub owner: &'a Pubkey,
-     /// The epoch at which this account will next owe rent
-     pub rent_epoch: u64,
-     /// Was the transaction signed by this account's public key?
-     pub is_signer: bool,
-     /// Is the account writable?
-     pub is_writable: bool,
-     /// This account's data contains a loaded program (and is now read-only)
-     pub executable: bool,
+       /// Public key of the account
+       pub key: &'a Pubkey,
+       /// The lamports in the account.  Modifiable by programs.
+       pub lamports: Rc<RefCell<&'a mut u64>>,
+       /// The data held in this account.  Modifiable by programs.
+       pub data: Rc<RefCell<&'a mut [u8]>>,
+       /// Program that owns this account
+       pub owner: &'a Pubkey,
+       /// The epoch at which this account will next owe rent
+       pub rent_epoch: u64,
+       /// Was the transaction signed by this account's public key?
+       pub is_signer: bool,
+       /// Is the account writable?
+       pub is_writable: bool,
+       /// This account's data contains a loaded program (and is now read-only)
+       pub executable: bool,
 }
 ```
 
@@ -125,11 +122,11 @@ In a normal scenario, `init_if_needed` is used for accounts that might need lazy
 
 ```rust
 #[account(
-  init_if_needed,
-  payer = user,
-  space = 8 + User::INIT_SPACE,
-  seeds = [b"user", user.key().as_ref()],
-  bump
+   init_if_needed,
+   payer = user,
+   space = 8 + User::INIT_SPACE,
+   seeds = [b"user", user.key().as_ref()],
+   bump
 )]
 pub user_account: Account<'info, User>,
 ```
@@ -146,38 +143,38 @@ An attacker can exploit `init_if_needed` by:
 ### **Methods of Uninitializing an Account:**
 
 1. **Draining Lamports:**
-   - An attacker can withdraw all lamports from an account, making it "uninitialized" in Anchor's eyes (since zero-lamport accounts are treated as nonexistent).
+    - An attacker can withdraw all lamports from an account, making it "uninitialized" in Anchor's eyes (since zero-lamport accounts are treated as nonexistent).
 2. **Changing Ownership:**
-   - If an attacker changes the account's owner to another program, Anchor will consider it uninitialized for the original program.
+    - If an attacker changes the account's owner to another program, Anchor will consider it uninitialized for the original program.
 3. **Corrupting the Discriminator:**
-   - If an attacker modifies the first 8 bytes (discriminator) of the account data, Anchor will treat it as uninitialized.
+    - If an attacker modifies the first 8 bytes (discriminator) of the account data, Anchor will treat it as uninitialized.
 
 ### **What Happens After the Attack?**
 
 - The account's data is **reset to default values** (e.g., balance = 0, user_name = None).
 - An attacker can abuse this to:
-  - Reset their debt in a lending protocol.
-  - Regain access to a locked account.
-  - Exploit logic that depends on the account's state.
+   - Reset their debt in a lending protocol.
+   - Regain access to a locked account.
+   - Exploit logic that depends on the account's state.
 
 ### **Security Practices for Using `init_if_needed` 🛡️:**
 
 1. **Avoid `init_if_needed` for Critical State Accounts:**
-   - If an account stores important data (e.g., user balances, protocol settings), use `init` instead to prevent reinitialization.
+    - If an account stores important data (e.g., user balances, protocol settings), use `init` instead to prevent reinitialization.
 2. **Add Explicit Checks:**
-   - Manually verify whether an account is already initialized before using `init_if_needed`.
+    - Manually verify whether an account is already initialized before using `init_if_needed`.
 
 ```rust
 #[account]
 #[derive(InitSpace)]
 pub struct User {
-   pub user_pubkey: Pubkey,
-   #[max_len(30)]
-   pub user_name: Option<String>,
-   pub balance: u64,
-   pub is_initialized: bool,
-   pub user_vault_bump: u8,
-   pub user_bump: u8,
+    pub user_pubkey: Pubkey,
+    #[max_len(30)]
+    pub user_name: Option<String>,
+    pub balance: u64,
+    pub is_initialized: bool,
+    pub user_vault_bump: u8,
+    pub user_bump: u8,
 }
 ```
 
