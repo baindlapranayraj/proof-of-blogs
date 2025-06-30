@@ -191,11 +191,12 @@ While `init_if_needed` provides flexibility, it introduces risks if misused. **A
 
 ## References:
 
-https://solana.com/developers/courses/program-security/reinitialization-attacks  
-https://www.rareskills.io/post/init-if-needed-anchor  
-https://medium.com/@calc1f4r/init-vs-init-if-needed-a-deep-dive-d33fe59e4de5  
-https://syedashar1.medium.com/program-security-in-anchor-framework-solana-smart-contract-security-b619e1e4d939  
-https://chatgpt.com/. 🙂
+[solana developer course](https://solana.com/developers/courses/program-security/reinitialization-attacks) <br/>
+[rare skill blog](https://www.rareskills.io/post/init-if-needed-anchor ) <br/>
+[init vs init_if_needed](https://medium.com/@calc1f4r/init-vs-init-if-needed-a-deep-dive-d33fe59e4de5)  <br/>
+[security concern in init_if_needed](https://syedashar1.medium.com/program-security-in-anchor-framework-solana-smart-contract-security-b619e1e4d939  
+)<br/>
+[chatGPT](https://chatgpt.com/) 🙂<br/>
 
 ## Source Code:
 

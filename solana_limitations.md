@@ -112,11 +112,15 @@ Each transaction contains one or more instructions that specify the operations t
 
 ### Transacion Size Limitaions:-
 
-<img
- width="1000px"
- height="550px"
- src="./images/trx_size.png"
-/>
+| **Component**         | **Size**                | **Description**                                                      |
+|-----------------------|-------------------------|----------------------------------------------------------------------|
+| Signature             | 64 bytes                | Each signature included in the transaction                           |
+| Message Header        | 3 bytes                 | Indicates number of signers and read-only accounts                   |
+| Account Pubkey        | 32 bytes (per account)  | Public key for each account involved in the transaction              |
+| Recent Blockhash      | 32 bytes                | Recent blockhash attached to the transaction                         |
+| Instructions          | Varies                  | Depends on number and complexity of instructions in the transaction  |
+
+<br/>
 
 Every Solana transaction has a size limit of **1,232 bytes**. The total transaction size is the sum of the bytes for all signatures, accounts involved, the blockhash, and the instructions (including their accounts and data), and must be less than 1,232 bytes. Because of this limit, developers need to fit all signers, account addresses, and required data within the 1,232-byte constraint
 
@@ -173,8 +177,9 @@ With this new [SIMD-296 proposes](https://github.com/solana-foundation/solana-im
 
 1. Explain about general programming language memory allocation.
 2. Write an example and explain all the things realted to it ex:- Frame, Stack, Heap and Data/Globl persistend Data.
-3. Connect the Dots with Solana BPF Virtual Machine.
-4. Explain how can we optmize the Stack Size Limitations.
+3. Explain how solana manages the memory 
+4. Connect the Dots with Solana BPF Virtual Machine.
+5. Explain how can we optmize the Stack Size Limitations.
 
 In Solana programs (smart contracts), there's a limitation on the stack size - the amount of memory allocated for local variables and function calls. The current stack frame size limit is **4KB per frame**.
 
