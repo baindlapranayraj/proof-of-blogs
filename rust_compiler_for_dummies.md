@@ -44,6 +44,8 @@ We will peel back each layer and understand how Rust compilation works. If we zo
 
 I don't expect you to know all the terms shown in the picture above, but don't worry by the end of this blog, you will understand all of them. Let's go step by step, peeling back each layer to understand what happens while compiling our code.
 
+Keeping this big picture in mind lets start peeling the Orange 🍊.
+
 ### Layer One: Lexing,Parsing and AST:
 
 Lets take an example as an source code:
@@ -62,7 +64,15 @@ fn time_pass(pass: &String) {
 }
 ```
 
-This step is the frist one where compilation start's, the compile first reads the code `.rs` file as plain text then compiler break down this linear text into **Tokens** like `fn`,`some`,`{` this is called **Lexing**
-Then compiler converts these tokens into Tree like structure called AST(Abstract Syntax Tree) and this AST still still resembles a lot with the source code but it is in tree like structure. You can see the AST version of the code example that we have taken at hear.
+This step is the frist one where compilation start's, the compile first reads the code `.rs` file as plain text then compiler break down this linear text into **Tokens** like `fn`,`some`,`{` this is called **Lexing**.
+
+Then compiler converts these tokens into Tree like structure called AST(Abstract Syntax Tree) and this AST still still resembles a lot with the source code but it is in tree like structure this is known as **Parsing**. You can see the AST version of the code example that we have taken at [hear](https://github.com/baindlapranayraj/rektoff/blob/main/rektoff-office-hour/AST.txt).
+
+<img src="./images/first_step.png" />
+
+AST will captures all the syntactic code into tree like structure and Crucially, You may ask why do we need to do this ? 
+
+Well, compilers cannot understand this linear source code directly. The source code is sugar-coated syntax designed for human readability, not for compilers. The Abstract Syntax Tree (AST) abstracts away certain details; it is a tree data structure that best represents the syntactic structure of the source code.
+
 
 
