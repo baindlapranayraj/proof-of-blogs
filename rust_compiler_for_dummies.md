@@ -42,7 +42,7 @@ We will peel back each layer and understand how Rust compilation works. If we zo
 />
 <br/>
 
-I don't expect you to know all the terms shown in the picture above, but don't worry—by the end of this blog, you will understand all of them. Let's go step by step, peeling back each layer to understand what happens while compiling our code.
+I don't expect you to know all the terms shown in the picture above, but don't worry by the end of this blog, you will understand all of them. Let's go step by step, peeling back each layer to understand what happens while compiling our code.
 
 Keeping this big picture in mind, let's start peeling the Orange 🍊.
 
@@ -83,6 +83,56 @@ We need to peel away this syntactic sugar to simplify the AST. The result of thi
 
 This process of simplifying or transforming the AST by removing syntactic sugar is known as **lowering**, and by the way, you can check the HIR representation of the AST by running this command: `rustc +nightly -Z unpretty=hir-tree src/main.rs`.
 
-By lowering the HIR further down and checking whether all types of the code are used correctly or not, like for example you cannot add an integer with a string, and of course you can do shit like this in JavaScript 🤡.
+By lowering the HIR further down and checking whether all types of the code are used correctly or not, like for example you cannot add an integer with a string, and of course you can do shit like this in ***JavaScript*** 🤡.
+<div align="center">
+ <img  src="./images/javascript_meme.jpg"/>
+</div>
 
-<img  src="./images/javascript_meme.jpg"/>
+After doing all the checks for types now **THIR(Typed High-Level Intermediate Representation)** is represented in form AST.            
+
+### Layer Three: Middle Intermediate Representation (MIR): 
+After lowering, the THIR becomes a compiler-friendly abstraction of the AST. From here, the next layer of abstraction begins this is the heart of the Rust compiler. MIR (Middle Intermediate Representation) is the phase where many classic memory bugs (like race conditions and use-after-free errors) can be detected. If such bugs are found, the compiler will simply throw an error.
+
+MIR represents your code as a **Control Flow Graph (CFG)**. Think of this as a detailed flowchart. Every `if`, `loop`, and `match` is broken down into basic blocks and explicit "go-to" jumps between them.
+
+To guarantee safety, the compiler can't just check the "happy path." It must analyze every possible path your code could take. What happens if this if is true? What if it's false? What if this loop runs zero times? 
+
+ The CFG makes all these paths explicit. The borrow checker can systematically walk this flowchart, tracking the state of every variable (owned, borrowed, moved) through every possible branch and loop, ensuring no rule is ever violated. You can learn more about CFG at [hear](https://en.wikipedia.org/wiki/Control-flow_graph) and for in order to see the MIR version of our code example you can check [hear](https://github.com/baindlapranayraj/rektoff/blob/main/rektoff-office-hour/MIR.txt)
+
+<div align="center">
+ <img width=800 height=500 src="./images/CFG.png"/>
+</div>
+
+If your code passes the borrow checker, it is considered "proven safe."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
