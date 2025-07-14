@@ -1,5 +1,5 @@
-<img
- width="1000px"
+<img 
+  width="1000px"
  height="430px"
  src="./images/shinchan .jpg"
 />
@@ -112,13 +112,13 @@ Each transaction contains one or more instructions that specify the operations t
 
 ### Transacion Size Limitaions:-
 
-| **Component**         | **Size**                | **Description**                                                      |
-|-----------------------|-------------------------|----------------------------------------------------------------------|
-| Signature             | 64 bytes                | Each signature included in the transaction                           |
-| Message Header        | 3 bytes                 | Indicates number of signers and read-only accounts                   |
-| Account Pubkey        | 32 bytes (per account)  | Public key for each account involved in the transaction              |
-| Recent Blockhash      | 32 bytes                | Recent blockhash attached to the transaction                         |
-| Instructions          | Varies                  | Depends on number and complexity of instructions in the transaction  |
+| **Component**    | **Size**               | **Description**                                                     |
+| ---------------- | ---------------------- | ------------------------------------------------------------------- |
+| Signature        | 64 bytes               | Each signature included in the transaction                          |
+| Message Header   | 3 bytes                | Indicates number of signers and read-only accounts                  |
+| Account Pubkey   | 32 bytes (per account) | Public key for each account involved in the transaction             |
+| Recent Blockhash | 32 bytes               | Recent blockhash attached to the transaction                        |
+| Instructions     | Varies                 | Depends on number and complexity of instructions in the transaction |
 
 <br/>
 
@@ -177,7 +177,7 @@ With this new [SIMD-296 proposes](https://github.com/solana-foundation/solana-im
 
 1. Explain about general programming language memory allocation.
 2. Write an example and explain all the things realted to it ex:- Frame, Stack, Heap and Data/Globl persistend Data.
-3. Explain how solana manages the memory 
+3. Explain how solana manages the memory
 4. Connect the Dots with Solana BPF Virtual Machine.
 5. Explain how can we optmize the Stack Size Limitations.
 
@@ -192,16 +192,15 @@ Stack memory is used for:
 - Return addresses
 - Temporary data
 
-
 ### Stack Size Constraints
 
 ```rust
     // This function / stack frame contains more the 4KB size
     pub fn handle(_ctx: Context<SendAmount>) -> Result<()> {
         // Allocate a 1MB buffer on the stack
-        
+
         let mut buffer = [0u8; 50000]; // 50,000 bytes (each u8 is 1 byte, so 50,000 * 1 = 50,000 bytes)
-          
+
        // Fill the buffer with some pattern
         for i in 0..buffer.len() {
             buffer[i] = (i % 256) as u8; // Fill with repeating 0..255
@@ -215,8 +214,8 @@ Stack memory is used for:
     }
 ```
 
-> ⚠️ **Warning Example:**  
->  
+> ⚠️ **Warning Example:**
+>
 > When you allocate a large buffer or array on the stack, you may encounter an error like:
 >
 > ```
@@ -225,20 +224,18 @@ Stack memory is used for:
 >
 > This warning indicates your function's stack frame exceeds Solana's 4KB stack limit. To resolve this, avoid allocating large arrays or buffers on the stack—use heap allocation or refactor your code to reduce stack usage.
 
-
 ```
 error Access violation in program section at address 0x1fff02ff8 of size 8
 ```
 
 ### Solana BPF Memory Regions
 
-| **Region**         | **Start Address** | **Purpose**                                      | **Access Rules**                      |
-|--------------------|------------------|--------------------------------------------------|---------------------------------------|
-| Program Code       | 0x100000000      | Executable bytecode (SBF instructions)            | Read-only, execute-only               |
-| Stack Data         | 0x200000000      | Function call frames and local variables          | Read/write (4KB per stack frame)      |
-| Heap Data          | 0x300000000      | Dynamic memory allocation (default 32KB)          | Bump allocator (no deallocation)      |
-| Input Parameters   | 0x400000000      | Serialized instruction data & account metadata    | Read-only during execution            |
-
+| **Region**       | **Start Address** | **Purpose**                                    | **Access Rules**                 |
+| ---------------- | ----------------- | ---------------------------------------------- | -------------------------------- |
+| Program Code     | 0x100000000       | Executable bytecode (SBF instructions)         | Read-only, execute-only          |
+| Stack Data       | 0x200000000       | Function call frames and local variables       | Read/write (4KB per stack frame) |
+| Heap Data        | 0x300000000       | Dynamic memory allocation (default 32KB)       | Bump allocator (no deallocation) |
+| Input Parameters | 0x400000000       | Serialized instruction data & account metadata | Read-only during execution       |
 
 To work around stack limitations:
 
