@@ -107,12 +107,12 @@ If your code passes the borrow checker, it is considered **proven safe**.
 
 
 ### Layer Four: LLVM Code Generation
-We are getting into final stages of compilation, after doing all the rust borrow and ownership checks in the MIR phase,Then compiler applies optimizations at the MIR level, such as removing dead code and simplifying control flow. 
+We are getting into the final stages of compilation. After performing all the Rust borrow and ownership checks during the MIR phase, the compiler applies optimizations at the MIR level, such as removing dead code and simplifying control flow.
 
-MIR is translated into LLVM IR(Low Level Virtual Machine IR), a platform-independent intermediate representation used by the LLVM backend. **This LLVM IR is comparable to assembly**, but tiny bit more high-level/human-readable.
+MIR is then translated into LLVM IR (Low Level Virtual Machine Intermediate Representation), a platform-independent intermediate representation used by the LLVM backend. **LLVM IR is comparable to assembly**, but it is a bit more high-level and human-readable.
 
-The code-generation phase of the Rust compiler is mainly done by **LLVM(Low Level Virtual Machine)**. LLVM is a set of tools for building a compiler, most notably used by the C[++] Compiler clang[++]. So finally after all rigorous optimization LLVM IR get translated into Machine Code for the target platform(eg: x86_86 or ARM64), You cannot run the X86 binary code in ARM64.
 
+The code-generation phase of the Rust compiler is mainly done by **LLVM (Low Level Virtual Machine)**. LLVM is a collection of tools for building compilers, most notably used by the C/C++ compiler Clang. Finally, after all rigorous optimizations, LLVM IR is translated into machine code for the target platform (e.g., x86_64 or ARM64).Consequently, binaries compiled for one architecture cannot run on another without emulation or translation, which means you cannot run x86_64 binary code on an ARM64 processor or vice-versa.
 
 <div align="center">
  <img width=800 height=500 src="./images/llvm.png"/>
