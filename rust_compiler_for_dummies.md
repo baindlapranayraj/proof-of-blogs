@@ -97,7 +97,8 @@ MIR represents your code as a **Control Flow Graph (CFG)**. Think of this as a d
 
 To guarantee safety, the compiler can't just check the "happy path." It must analyze every possible path your code could take. What happens if this if is true? What if it's false? What if this loop runs zero times? 
 
- The CFG makes all these paths explicit. The borrow checker can systematically walk this flowchart, tracking the state of every variable (owned, borrowed, moved) through every possible branch and loop, ensuring no rule is ever violated. You can learn more about CFG at [hear](https://en.wikipedia.org/wiki/Control-flow_graph) and for in order to see the MIR version of our code example you can check [hear](https://github.com/baindlapranayraj/rektoff/blob/main/rektoff-office-hour/MIR.txt)
+ The CFG makes all these paths explicit. The borrow checker can systematically walk this flowchart, tracking the state of every variable (owned, borrowed, moved) through every possible branch and loop, ensuring no rule is ever violated, Basically in this phase compiler will check every single interaction with memory done by the program. You can learn more about CFG at [hear](https://en.wikipedia.org/wiki/Control-flow_graph) and for in order to see the MIR version of our code example you can check [hear](https://github.com/baindlapranayraj/rektoff/blob/main/rektoff-office-hour/MIR.txt) 
+ 
 
 <div align="center">
  <img width=800 height=500 src="./images/CFG.png"/>
