@@ -46,7 +46,7 @@ I don't expect you to know all the terms shown in the picture above, but don't w
 
 Keeping this big picture in mind, let's start peeling the Orange 🍊.
 
-### Layer One: Lexing, Parsing, and AST:
+### Layer One: Lexing, Parsing, and AST
 
 Let's take an example as source code:
 ```rust
@@ -76,7 +76,7 @@ The AST captures all the syntactic code into a tree-like structure. You may ask,
 Well, compilers cannot understand this linear source code directly. The source code is sugar-coated syntax designed for human readability, not for compilers. The Abstract Syntax Tree (AST) abstracts away certain details, it is a tree data structure that best represents the syntactic structure of the source code. You can learn more about AST on this [Wikipedia page](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
 
 
-### Layer Two: AST Lowering (HIR and THIR): 
+### Layer Two: AST Lowering (HIR and THIR)
 Well, after parsing the tokens and converting them into an AST, the next layer begins. At this point, the AST closely resembles the source code, which still contains a lot of syntactic sugar, such as `for` and `match`.
 
 We need to peel away this syntactic sugar to simplify the AST. The result of this desugaring process is a form of the AST known as **HIR (High-Level Intermediate Representation)**. HIR is still close to what the user originally wrote, but it removes syntactic sugar for example, converting a `for` loop into a `loop` with iteration logic. After removing all the fluff, HIR is now a more compiler-friendly abstraction representation of the AST.
@@ -90,7 +90,7 @@ By lowering the HIR further down and checking whether all types of the code are 
 
 After doing all the checks for types now **THIR(Typed High-Level Intermediate Representation)** is represented in form AST.            
 
-### Layer Three: Middle Intermediate Representation (MIR): 
+### Layer Three: Middle Intermediate Representation (MIR)
 After lowering, the THIR becomes a compiler-friendly abstraction of the AST. From here, the next layer of abstraction begins this is the heart of the Rust compiler. MIR (Middle Intermediate Representation) is the phase where many classic memory bugs (like race conditions and use-after-free errors) can be detected. If such bugs are found, the compiler will simply throw an error.
 
 MIR represents your code as a **Control Flow Graph (CFG)**. Think of this as a detailed flowchart. Every `if`, `loop`, and `match` is broken down into basic blocks and explicit "go-to" jumps between them.
@@ -103,7 +103,35 @@ To guarantee safety, the compiler can't just check the "happy path." It must ana
  <img width=800 height=500 src="./images/CFG.png"/>
 </div>
 
-If your code passes the borrow checker, it is considered "proven safe."
+If your code passes the borrow checker, it is considered **proven safe**.
+
+
+### Layer Four: LLVM Code Generation
+We are getting into final stages of compilation, after doing all the rust borrow and ownership checks in the MIR phase,Then compiler applies optimizations at the MIR level, such as removing dead code and simplifying control flow. 
+
+MIR is translated into LLVM IR(Low Level Virtual Machine IR), a platform-independent intermediate representation used by the LLVM backend. **This LLVM IR is comparable to assembly**, but tiny bit more high-level/human-readable.
+
+The code-generation phase of the Rust compiler is mainly done by **LLVM(Low Level Virtual Machine)**. LLVM is a set of tools for building a compiler, most notably used by the C[++] Compiler clang[++]. So finally after all rigorous optimization LLVM IR get translated into Machine Code for the target platform(eg: x86_86 or ARM64), You cannot run the X86 binary code in ARM64.
+
+
+<div align="center">
+ <img width=800 height=500 src="./images/llvm.png"/>
+</div>
+
+## References:
+[rust_compiler_video_by_daniel](https://youtu.be/Ju7v6vgfEt8?si=-ElYGBaXZvUwt98m)<br/>
+[stack_overflow_discussion](https://stackoverflow.com/questions/43385142/how-is-rust-compiled-to-machine-code)<br/>
+[llvm_video](https://youtu.be/3WojCM9r0Ls?si=kfTtzQ-BrsPvs-5q)<br/>
+[stack_overflow_discussion_of_llvm](https://stackoverflow.com/questions/2354725/what-exactly-is-llvm)
+
+
+
+<img 
+  width="1500px"
+ height="460px"
+ src="./images/rust_compiler_footer.png"
+/>
+
 
 
 
