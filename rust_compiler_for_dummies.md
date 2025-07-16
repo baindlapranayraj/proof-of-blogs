@@ -94,9 +94,9 @@ After lowering HIR to THIR and before MIR unsafety checker will walks through TH
 
 Because `unsafeck` needs typed expressions, it’s placed after type checking and THIR construction but before MIR building. This positioning allows it to enforce Rust’s safety guarantees early and precisely, ensuring all unsafe code is properly enclosed in explicit unsafe contexts.
 
-### Layer Three: Middle Intermediate Representation (MIR)
+### Layer Three: Mid-level Intermediate Representation (MIR)
 
-After lowering, the THIR becomes a compiler-friendly abstraction of the AST. From here, the next layer of abstraction begins this is the heart of the Rust compiler. MIR (Middle Intermediate Representation) is the phase where many classic memory bugs (like race conditions and use-after-free errors) can be detected. If such bugs are found, the compiler will simply throw an error.
+After lowering, the HIR becomes a compiler-friendly abstraction of the AST. From here, the next layer of abstraction begins this is the heart of the Rust compiler. MIR (Mid-level Intermediate Representation) is the phase where many classic memory bugs (like race conditions and use-after-free errors) can be detected. If such bugs are found, the compiler will simply throw an error.
 
 MIR represents your code as a **Control Flow Graph (CFG)**. Think of this as a detailed flowchart. Every `if`, `loop`, and `match` is broken down into basic blocks and explicit "go-to" jumps between them.
 
