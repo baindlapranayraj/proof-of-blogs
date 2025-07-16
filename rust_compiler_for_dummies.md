@@ -94,19 +94,23 @@ After lowering HIR to THIR and before MIR unsafety checker will walks through TH
 
 Because `unsafeck` needs typed expressions, it’s placed after type checking and THIR construction but before MIR building. This positioning allows it to enforce Rust’s safety guarantees early and precisely, ensuring all unsafe code is properly enclosed in explicit unsafe contexts.
 
-### Layer Three: Mid-level Intermediate Representation (MIR)
+### Layer Three: Middle Intermediate Representation (MIR)
 
-After lowering, the HIR becomes a compiler-friendly abstraction of the AST. From here, the next layer of abstraction begins this is the heart of the Rust compiler. MIR (Mid-level Intermediate Representation) is the phase where many classic memory bugs (like race conditions and use-after-free errors) can be detected. If such bugs are found, the compiler will simply throw an error.
+After lowering, HIR is more compiler-friendly.
+
+After lowering, the HIR becomes a compiler-friendly abstraction of the AST. From here, the next layer of abstraction begins this is the heart of the Rust compiler. MIR (Middle Intermediate Representation) is the phase where many classic memory bugs (like race conditions and use-after-free errors) can be detected. If such bugs are found, the compiler will simply throw an error.
 
 MIR represents your code as a **Control Flow Graph (CFG)**. Think of this as a detailed flowchart. Every `if`, `loop`, and `match` is broken down into basic blocks and explicit "go-to" jumps between them.
 
 To guarantee safety, the compiler can't just check the "happy path." It must analyze every possible path your code could take. What happens if this if is true? What if it's false? What if this loop runs zero times?
 
-The CFG makes all these paths explicit. The borrow checker can systematically walk this flowchart, tracking the state of every variable (owned, borrowed, moved) through every possible branch and loop, ensuring no rule is ever violated. You can learn more about CFG at [here](https://en.wikipedia.org/wiki/Control-flow_graph) and for in order to see the MIR version of our code example you can check [here](https://github.com/baindlapranayraj/rektoff/blob/main/rektoff-office-hour/MIR.txt)
+The CFG makes all these paths explicit. The borrow checker can systematically walk this flowchart, tracking the state of every variable (owned, borrowed, moved) through every possible branch and loop, ensuring no rule is ever violated. You can learn more about CFG at [hear](https://en.wikipedia.org/wiki/Control-flow_graph) and for in order to see the MIR version of our code example you can check [hear](https://github.com/baindlapranayraj/rektoff/blob/main/rektoff-office-hour/MIR.txt)
 
 <div align="center">
  <img width=800 height=500 src="./images/CFG.png"/>
 </div>
+
+Well long story short, MIR provides the structure for the compiler to exhaustively check every possible path and guarantee that Rust's safety invariants are met. This system is incredibly robust and is the foundation of Rust's safety but when an `unsafe` block is introduced, the compiler trusts the programmer to write memory safe manually. If that trust is violated, the compiler's entire analysis of the program's MIR can be invalidated, potentially compromising the behavior of any code that relies on those broken assumptions, no matter how "safe" it appears to be.
 
 If your code passes the borrow checker, it is considered **sound**. We say a Rust program is **sound** if it cannot trigger undefined behavior (which is the same as being proven memory safe).
 
