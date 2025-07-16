@@ -108,9 +108,11 @@ The CFG makes all these paths explicit. The borrow checker can systematically wa
  <img width=800 height=500 src="./images/CFG.png"/>
 </div>
 
-Well long story short, MIR provides the structure for the compiler to exhaustively check every possible path and guarantee that Rust's safety invariants are met. This system is incredibly robust and is the foundation of Rust's safety but when an `unsafe` block is introduced, the compiler trusts the programmer to write memory safe manually. If that trust is violated, the compiler's entire analysis of the program's MIR can be invalidated, potentially compromising the behavior of any code that relies on those broken assumptions, no matter how "safe" it appears to be.
+Well long story short, MIR provides the structure for the compiler to exhaustively check every possible path and guarantee that Rust's safety invariants are met. This system is incredibly robust and is the foundation of Rust's safety.
 
-If your code passes the borrow checker, it is considered **sound**. We say a Rust program is **sound** if it cannot trigger undefined behavior (which is the same as being proven memory safe).
+The unsafe keyword creates a critical exception. It is a promise from the programmer that they will uphold Rust's safety rules manually. If that promise is broken, the compiler's foundational assumptions are invalidated. This can compromise the behavior of the entire program, no matter how "safe" the surrounding code appears.
+
+Ultimately, a Rust program is considered sound if it is free from undefined behavior. Safe code that passes the compiler's checks achieves this soundness automatically.
 
 ### Layer Four: LLVM Code Generation
 
