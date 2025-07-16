@@ -96,8 +96,6 @@ Because `unsafeck` needs typed expressions, it’s placed after type checking an
 
 ### Layer Three: Middle Intermediate Representation (MIR)
 
-After lowering, HIR is more compiler-friendly.
-
 After lowering, the HIR becomes a compiler-friendly abstraction of the AST. From here, the next layer of abstraction begins this is the heart of the Rust compiler. MIR (Middle Intermediate Representation) is the phase where many classic memory bugs (like race conditions and use-after-free errors) can be detected. If such bugs are found, the compiler will simply throw an error.
 
 MIR represents your code as a **Control Flow Graph (CFG)**. Think of this as a detailed flowchart. Every `if`, `loop`, and `match` is broken down into basic blocks and explicit "go-to" jumps between them.
