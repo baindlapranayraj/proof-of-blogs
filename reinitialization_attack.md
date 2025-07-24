@@ -196,7 +196,7 @@ While `init_if_needed` provides flexibility, it introduces risks if misused. **A
 [init vs init_if_needed](https://medium.com/@calc1f4r/init-vs-init-if-needed-a-deep-dive-d33fe59e4de5)  <br/>
 [security concern in init_if_needed](https://syedashar1.medium.com/program-security-in-anchor-framework-solana-smart-contract-security-b619e1e4d939  
 )<br/>
-[chatGPT](https://chatgpt.com/) 🙂<br/>
+[stackoverflow_discussion](https://solana.stackexchange.com/questions/4948/what-is-anchor-8-bytes-discriminator) <br/>
 
 ## Source Code:
 
